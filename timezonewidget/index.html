@@ -12,43 +12,26 @@
   --green:#009845;--sky:#10CFC9;
   --text:#fff;--muted:rgba(255,255,255,0.55);--dim:rgba(255,255,255,0.25);
   --border:rgba(255,255,255,0.10);
-  --row-h:34px;
+  --row-h:42px;
   --gap:4px;
 }
 html,body{width:100%;background:var(--deep-blue);font-family:"Inter",sans-serif;color:var(--text);overflow:hidden;}
-.wrapper{max-width:1400px;margin:0 auto;padding:10px 14px 12px;}
+.wrapper{max-width:1400px;margin:0 auto;padding:10px 14px 8px;}
 .header{display:flex;align-items:center;justify-content:space-between;margin-bottom:8px;}
-.title{font-size:13px;font-weight:800;letter-spacing:-0.2px;}
+.title{font-size:16px;font-weight:800;letter-spacing:-0.2px;}
 .title em{color:var(--sky);font-style:normal;}
-.live{display:flex;align-items:center;gap:5px;font-size:10px;color:var(--muted);}
-.live-dot{width:5px;height:5px;border-radius:50%;background:var(--green);animation:glow 2s infinite;flex-shrink:0;}
+.live{display:flex;align-items:center;gap:5px;font-size:11px;color:var(--muted);}
+.live-dot{width:6px;height:6px;border-radius:50%;background:var(--green);animation:glow 2s infinite;flex-shrink:0;}
 @keyframes glow{0%,100%{box-shadow:0 0 0 0 rgba(0,152,69,0.6);}50%{box-shadow:0 0 0 3px rgba(0,152,69,0);}}
 
-/* VIEWPORT */
-.ticker-viewport{
-  position:relative;
-  overflow:hidden;
-  border-radius:10px;
-}
+.ticker-viewport{position:relative;overflow:hidden;border-radius:10px;}
+.ticker-track{position:relative;width:100%;}
 
-/* TRACK holds the rows, positioned absolutely */
-.ticker-track{
-  position:relative;
-  width:100%;
-}
-
-/* ROW */
 .row{
-  height:var(--row-h);
-  position:absolute;
-  width:100%;
-  background:var(--card-bg);
-  border:1px solid var(--border);
-  border-radius:8px;
-  padding:0 12px;
-  display:flex;align-items:center;gap:12px;
-  overflow:hidden;
-  transition:top 0.45s cubic-bezier(0.4,0,0.2,1), opacity 0.35s ease, transform 0.45s cubic-bezier(0.4,0,0.2,1);
+  height:var(--row-h);position:absolute;width:100%;
+  background:var(--card-bg);border:1px solid var(--border);border-radius:8px;
+  padding:0 14px;display:flex;align-items:center;gap:14px;overflow:hidden;
+  transition:top 0.45s cubic-bezier(0.4,0,0.2,1),opacity 0.35s ease,transform 0.45s cubic-bezier(0.4,0,0.2,1);
   will-change:top,opacity,transform;
 }
 .row:hover{background:var(--card-hover);}
@@ -58,22 +41,22 @@ html,body{width:100%;background:var(--deep-blue);font-family:"Inter",sans-serif;
 .row.closed::before{background:#ef4444;}
 .row.closed{opacity:0.65;}
 
-.row-region{font-size:8px;font-weight:700;letter-spacing:0.7px;text-transform:uppercase;padding:2px 6px;border-radius:20px;white-space:nowrap;flex-shrink:0;min-width:44px;text-align:center;}
-.row-city{font-size:12px;font-weight:700;color:#fff;white-space:nowrap;flex:0 0 120px;}
-.row-country{font-size:9.5px;color:var(--muted);flex:0 0 80px;white-space:nowrap;}
-.row-time{font-size:13px;font-weight:800;letter-spacing:-0.4px;color:#fff;flex:1;white-space:nowrap;}
-.row-date{font-size:9.5px;color:var(--muted);flex:0 0 100px;white-space:nowrap;}
-.row-tz{font-size:9px;color:var(--dim);flex:0 0 38px;text-align:right;white-space:nowrap;}
-.row-badge{font-size:8px;font-weight:700;padding:2px 7px;border-radius:20px;white-space:nowrap;flex-shrink:0;}
+.row-region{font-size:10px;font-weight:700;letter-spacing:0.6px;text-transform:uppercase;padding:3px 7px;border-radius:20px;white-space:nowrap;flex-shrink:0;min-width:50px;text-align:center;}
+.row-city{font-size:15px;font-weight:700;color:#fff;white-space:nowrap;flex:0 0 130px;}
+.row-country{font-size:12px;color:var(--muted);flex:0 0 90px;white-space:nowrap;}
+.row-time{font-size:16px;font-weight:800;letter-spacing:-0.4px;color:#fff;flex:1;white-space:nowrap;}
+.row-date{font-size:12px;color:var(--muted);flex:0 0 110px;white-space:nowrap;}
+.row-tz{font-size:11px;color:var(--dim);flex:0 0 44px;text-align:right;white-space:nowrap;}
+.row-badge{font-size:10px;font-weight:700;padding:3px 9px;border-radius:20px;white-space:nowrap;flex-shrink:0;}
 .row.open   .row-badge{background:rgba(0,152,69,0.18);color:#009845;border:1px solid rgba(0,152,69,0.3);}
 .row.soon   .row-badge{background:rgba(245,158,11,0.18);color:#f59e0b;border:1px solid rgba(245,158,11,0.3);}
 .row.closed .row-badge{background:rgba(239,68,68,0.12);color:#ef4444;border:1px solid rgba(239,68,68,0.2);}
 
-.footer{display:flex;align-items:center;justify-content:space-between;margin-top:8px;flex-wrap:wrap;gap:4px;}
-.legend{display:flex;gap:12px;}
-.leg{display:flex;align-items:center;gap:4px;font-size:9px;color:var(--muted);}
-.leg-dot{width:6px;height:6px;border-radius:50%;}
-.timestamp{font-size:9px;color:var(--dim);font-style:italic;}
+.footer{display:flex;align-items:center;justify-content:space-between;margin-top:7px;flex-wrap:wrap;gap:4px;}
+.legend{display:flex;gap:14px;}
+.leg{display:flex;align-items:center;gap:5px;font-size:11px;color:var(--muted);}
+.leg-dot{width:7px;height:7px;border-radius:50%;}
+.timestamp{font-size:10px;color:var(--dim);font-style:italic;}
 
 @media(max-width:580px){.row-country,.row-date,.row-tz{display:none;}.row-city{flex:0 0 100px;}}
 </style>
@@ -96,7 +79,6 @@ html,body{width:100%;background:var(--deep-blue);font-family:"Inter",sans-serif;
     <div class="timestamp" id="ts"></div>
   </div>
 </div>
-
 <script>
 const CITIES=[
   {city:"Los Angeles", country:"USA",       region:"NAM",   tz:"America/Los_Angeles",  color:"#60a5fa"},
@@ -116,11 +98,11 @@ const CITIES=[
   {city:"Sydney",      country:"Australia", region:"APAC",  tz:"Australia/Sydney",     color:"#f87171"},
 ];
 
-const VISIBLE   = 6;    // rows shown at once
-const ROW_H     = 34;   // px, must match CSS --row-h
-const GAP       = 4;    // px, must match CSS --gap
-const PAUSE_MS  = 2200; // how long to pause between scrolls
-const ANIM_MS   = 450;  // transition duration ms
+const VISIBLE  = 6;
+const ROW_H    = 42;
+const GAP      = 4;
+const PAUSE_MS = 2200;
+const ANIM_MS  = 450;
 
 function getStatus(tz){const h=parseFloat(new Intl.DateTimeFormat("en-US",{hour:"numeric",hour12:false,timeZone:tz}).format(new Date()));if(h>=9&&h<18)return"open";if((h>=7&&h<9)||(h>=18&&h<20))return"soon";return"closed";}
 function fmtTime(tz){return new Intl.DateTimeFormat("en-US",{hour:"2-digit",minute:"2-digit",second:"2-digit",hour12:true,timeZone:tz}).format(new Date());}
@@ -129,112 +111,61 @@ function fmtAbbr(tz){return(new Intl.DateTimeFormat("en-US",{timeZoneName:"short
 function badgeLabel(s){return s==="open"?"Open":s==="soon"?"Soon":"Closed";}
 
 function makeRowEl(cityIndex){
-  const c = CITIES[cityIndex];
-  const s = getStatus(c.tz);
-  const el = document.createElement("div");
-  el.className = "row " + s;
-  el.dataset.cityIndex = cityIndex;
-  el.innerHTML = `
-    <span class="row-region" style="background:${c.color}22;color:${c.color};border:1px solid ${c.color}44">${c.region}</span>
-    <div class="row-city">${c.city}</div>
-    <div class="row-country">${c.country}</div>
-    <div class="row-time">${fmtTime(c.tz)}</div>
-    <div class="row-date">${fmtDate(c.tz)}</div>
-    <div class="row-tz">${fmtAbbr(c.tz)}</div>
-    <span class="row-badge">${badgeLabel(s)}</span>`;
+  const c=CITIES[cityIndex],s=getStatus(c.tz);
+  const el=document.createElement("div");
+  el.className="row "+s;el.dataset.cityIndex=cityIndex;
+  el.innerHTML=`<span class="row-region" style="background:${c.color}22;color:${c.color};border:1px solid ${c.color}44">${c.region}</span><div class="row-city">${c.city}</div><div class="row-country">${c.country}</div><div class="row-time">${fmtTime(c.tz)}</div><div class="row-date">${fmtDate(c.tz)}</div><div class="row-tz">${fmtAbbr(c.tz)}</div><span class="row-badge">${badgeLabel(s)}</span>`;
   return el;
 }
 
-// State
-const track    = document.getElementById("track");
-const viewport = document.getElementById("viewport");
-const rowUnit  = ROW_H + GAP;
-let queue      = []; // city indices currently in DOM (VISIBLE + 1 for the incoming row)
-let nextCity   = 0;
-let animating  = false;
+const track=document.getElementById("track");
+const viewport=document.getElementById("viewport");
+const rowUnit=ROW_H+GAP;
+let queue=[],nextCity=0,animating=false;
 
-// Set viewport height to show exactly VISIBLE rows
-viewport.style.height = (VISIBLE * ROW_H + (VISIBLE - 1) * GAP) + "px";
-track.style.height    = ((VISIBLE + 1) * ROW_H + VISIBLE * GAP) + "px";
+viewport.style.height=(VISIBLE*ROW_H+(VISIBLE-1)*GAP)+"px";
+track.style.height=((VISIBLE+1)*ROW_H+VISIBLE*GAP)+"px";
 
-function positionRow(el, slot){
-  // slot 0 = top visible, slot VISIBLE = just below viewport (incoming)
-  el.style.top = (slot * rowUnit) + "px";
-}
+function positionRow(el,slot){el.style.top=(slot*rowUnit)+"px";}
 
 function init(){
-  // Fill VISIBLE rows initially
-  for(let i = 0; i < VISIBLE; i++){
-    const el = makeRowEl(nextCity % CITIES.length);
-    positionRow(el, i);
-    track.appendChild(el);
-    queue.push({ el, cityIdx: nextCity % CITIES.length });
-    nextCity++;
+  for(let i=0;i<VISIBLE;i++){
+    const el=makeRowEl(nextCity%CITIES.length);
+    positionRow(el,i);track.appendChild(el);
+    queue.push({el,cityIdx:nextCity%CITIES.length});nextCity++;
   }
 }
 
 function step(){
-  if(animating) return;
-  animating = true;
-
-  // 1. Create the incoming row below viewport, invisible
-  const incomingIdx = nextCity % CITIES.length;
-  const incomingEl  = makeRowEl(incomingIdx);
-  positionRow(incomingEl, VISIBLE);       // below viewport
-  incomingEl.style.opacity = "0";
-  incomingEl.style.transform = "translateY(6px)";
+  if(animating)return;animating=true;
+  const incomingIdx=nextCity%CITIES.length;
+  const incomingEl=makeRowEl(incomingIdx);
+  positionRow(incomingEl,VISIBLE);
+  incomingEl.style.opacity="0";incomingEl.style.transform="translateY(6px)";
   track.appendChild(incomingEl);
-  queue.push({ el: incomingEl, cityIdx: incomingIdx });
-  nextCity++;
-
-  // Force reflow so transition fires
+  queue.push({el:incomingEl,cityIdx:incomingIdx});nextCity++;
   void incomingEl.offsetHeight;
-
-  // 2. Fade out + slide up the top row
-  const outgoing = queue[0].el;
-  outgoing.style.opacity   = "0";
-  outgoing.style.transform = "translateY(-6px)";
-
-  // 3. Shift all rows up by one slot
-  queue.forEach((item, i) => {
-    positionRow(item.el, i - 1);
-  });
-
-  // 4. Fade incoming row in
-  incomingEl.style.opacity   = "1";
-  incomingEl.style.transform = "translateY(0)";
-
-  // 5. After animation: remove the outgoing row, clean queue
-  setTimeout(() => {
-    outgoing.remove();
-    queue.shift();
-    animating = false;
-  }, ANIM_MS + 50);
+  const outgoing=queue[0].el;
+  outgoing.style.opacity="0";outgoing.style.transform="translateY(-6px)";
+  queue.forEach((item,i)=>positionRow(item.el,i-1));
+  incomingEl.style.opacity="1";incomingEl.style.transform="translateY(0)";
+  setTimeout(()=>{outgoing.remove();queue.shift();animating=false;},ANIM_MS+50);
 }
 
-// Update times every second
 function tick(){
-  track.querySelectorAll(".row").forEach(row => {
-    const idx = parseInt(row.dataset.cityIndex);
-    const c = CITIES[idx];
-    if(!c) return;
-    const s = getStatus(c.tz);
-    // Update class
-    row.className = "row " + s + (s==="closed" ? " closed" : "");
-    // Update time cell (3rd div child)
-    const divs = row.querySelectorAll("div");
-    if(divs[2]) divs[2].textContent = fmtTime(c.tz);
-    if(divs[3]) divs[3].textContent = fmtDate(c.tz);
-    const badge = row.querySelector(".row-badge");
-    if(badge) badge.textContent = badgeLabel(s);
+  track.querySelectorAll(".row").forEach(row=>{
+    const idx=parseInt(row.dataset.cityIndex),c=CITIES[idx];if(!c)return;
+    const s=getStatus(c.tz);row.className="row "+s;
+    const divs=row.querySelectorAll("div");
+    if(divs[2])divs[2].textContent=fmtTime(c.tz);
+    if(divs[3])divs[3].textContent=fmtDate(c.tz);
+    const badge=row.querySelector(".row-badge");if(badge)badge.textContent=badgeLabel(s);
   });
-  const ts = document.getElementById("ts");
-  if(ts) ts.textContent = "Updated " + new Date().toLocaleTimeString("en-US",{hour:"2-digit",minute:"2-digit",second:"2-digit"});
+  const ts=document.getElementById("ts");
+  if(ts)ts.textContent="Updated "+new Date().toLocaleTimeString("en-US",{hour:"2-digit",minute:"2-digit",second:"2-digit"});
 }
 
-init();
-setInterval(step, PAUSE_MS);
-setInterval(tick, 1000);
+init();setInterval(step,PAUSE_MS);setInterval(tick,1000);
 </script>
 </body>
 </html>
