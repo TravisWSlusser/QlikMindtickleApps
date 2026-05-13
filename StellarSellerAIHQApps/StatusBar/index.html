@@ -1,0 +1,205 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>AI Status Bar</title>
+<link href="https://fonts.googleapis.com/css2?family=Barlow:wght@600;700&family=Barlow+Condensed:wght@700;800&display=swap" rel="stylesheet">
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    background: #0d2a47;
+    overflow: hidden;
+    font-family: 'Barlow', sans-serif;
+  }
+
+  .status-bar {
+    height: 36px;
+    background: #0d2a47;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0;
+    padding: 0 24px;
+    border-top: 1px solid rgba(255,255,255,0.06);
+    border-bottom: 1px solid rgba(255,255,255,0.06);
+  }
+
+  .label {
+    font-family: 'Barlow Condensed', sans-serif;
+    font-size: 11px;
+    font-weight: 800;
+    letter-spacing: 2px;
+    color: rgba(255,255,255,0.35);
+    text-transform: uppercase;
+    margin-right: 24px;
+    white-space: nowrap;
+  }
+
+  .providers {
+    display: flex;
+    align-items: center;
+    gap: 32px;
+  }
+
+  .provider {
+    display: flex;
+    align-items: center;
+    gap: 7px;
+  }
+
+  .dot {
+    width: 7px;
+    height: 7px;
+    border-radius: 50%;
+    flex-shrink: 0;
+  }
+
+  .dot.operational {
+    background: #009845;
+    box-shadow: 0 0 6px rgba(0, 152, 69, 0.7);
+    animation: pulse-green 2s ease-in-out infinite;
+  }
+
+  .dot.minor {
+    background: #8B5CF6;
+    box-shadow: 0 0 8px rgba(139, 92, 246, 0.8);
+    animation: pulse-purple 2s ease-in-out infinite;
+  }
+
+  .dot.major, .dot.critical {
+    background: #f97316;
+    box-shadow: 0 0 10px rgba(249, 115, 22, 0.9);
+    animation: flash-orange 0.6s ease-in-out infinite;
+  }
+
+  .dot.unknown {
+    background: rgba(255,255,255,0.25);
+  }
+
+  @keyframes pulse-green {
+    0%, 100% { opacity: 1; transform: scale(1); }
+    50% { opacity: 0.6; transform: scale(0.85); }
+  }
+
+  @keyframes pulse-purple {
+    0%, 100% { opacity: 1; transform: scale(1); box-shadow: 0 0 8px rgba(139, 92, 246, 0.8); }
+    50% { opacity: 0.6; transform: scale(0.85); box-shadow: 0 0 4px rgba(139, 92, 246, 0.4); }
+  }
+
+  @keyframes flash-orange {
+    0%, 100% { opacity: 1; transform: scale(1.1); box-shadow: 0 0 12px rgba(249, 115, 22, 1); }
+    50% { opacity: 0.3; transform: scale(0.8); box-shadow: 0 0 4px rgba(249, 115, 22, 0.3); }
+  }
+
+  .provider-name {
+    font-family: 'Barlow Condensed', sans-serif;
+    font-size: 13px;
+    font-weight: 800;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    color: rgba(255,255,255,0.85);
+    white-space: nowrap;
+  }
+
+  .provider-status {
+    font-size: 11px;
+    font-weight: 600;
+    color: rgba(255,255,255,0.35);
+    white-space: nowrap;
+    letter-spacing: 0.3px;
+  }
+
+  .divider {
+    width: 1px;
+    height: 16px;
+    background: rgba(255,255,255,0.08);
+  }
+
+  .updated {
+    margin-left: 24px;
+    font-size: 10px;
+    font-weight: 600;
+    color: rgba(255,255,255,0.2);
+    letter-spacing: 0.5px;
+    white-space: nowrap;
+  }
+</style>
+</head>
+<body>
+
+<div class="status-bar">
+  <span class="label">AI Status</span>
+  <div class="providers" id="providers">
+    <!-- Populated by JS -->
+  </div>
+  <span class="updated" id="updated"></span>
+</div>
+
+<script>
+  const VERCEL_API = 'https://qlik-mindtickle-apps.vercel.app/api/status';
+  const CACHE_KEY = 'ss_status_cache_v2';
+  const CACHE_TTL = 5 * 60 * 1000;
+
+  function getStatusLabel(status) {
+    switch(status) {
+      case 'operational': return 'All Clear';
+      case 'minor': return 'Potential D.O.R.C.S. Activity';
+      case 'major': return 'D.O.R.C.S. Attacking!';
+      case 'critical': return 'D.O.R.C.S. Attacking!';
+      default: return 'Status Unknown';
+    }
+  }
+
+  function buildBar(statuses) {
+    const container = document.getElementById('providers');
+    container.innerHTML = '';
+
+    statuses.forEach((provider, i) => {
+      if (i > 0) {
+        const div = document.createElement('div');
+        div.className = 'divider';
+        container.appendChild(div);
+      }
+
+      const el = document.createElement('div');
+      el.className = 'provider';
+      el.innerHTML = `
+        <div class="dot ${provider.status}"></div>
+        <span class="provider-name">${provider.name}</span>
+        <span class="provider-status">${getStatusLabel(provider.status)}</span>
+      `;
+      container.appendChild(el);
+    });
+
+    const now = new Date();
+    document.getElementById('updated').textContent =
+      `Updated ${now.toLocaleTimeString('en-us', { hour: 'numeric', minute: '2-digit' })}`;
+  }
+
+  async function loadStatus() {
+    try {
+      const cached = localStorage.getItem(CACHE_KEY);
+      if (cached) {
+        const { data, timestamp } = JSON.parse(cached);
+        if (Date.now() - timestamp < CACHE_TTL) { buildBar(data); return; }
+      }
+    } catch(e) {}
+
+    try {
+      const res = await fetch(VERCEL_API);
+      const data = await res.json();
+      localStorage.setItem(CACHE_KEY, JSON.stringify({ data, timestamp: Date.now() }));
+      buildBar(data);
+    } catch(e) {
+      document.getElementById('providers').innerHTML =
+        '<span style="color:rgba(255,255,255,0.3);font-size:12px;">Status unavailable</span>';
+    }
+  }
+
+  loadStatus();
+  setInterval(loadStatus, 5 * 60 * 1000);
+</script>
+</body>
+</html>
