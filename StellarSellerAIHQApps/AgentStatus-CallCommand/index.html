@@ -69,21 +69,21 @@
   @keyframes flash-orange { 0%,100%{opacity:1;transform:scale(1.1);box-shadow:0 0 12px rgba(249,115,22,1)}50%{opacity:0.3;transform:scale(0.8);box-shadow:0 0 4px rgba(249,115,22,0.3)} }
 
   .provider-icon { width: 14px; height: 14px; opacity: 0.85; flex-shrink: 0; }
-  .provider-name { font-family: 'Barlow Condensed', sans-serif; font-size: 13px; font-weight: 800; letter-spacing: 1px; text-transform: uppercase; color: rgba(255,255,255,0.85); white-space: nowrap; }
-  .provider-status { font-size: 11px; font-weight: 300; color: rgba(255,255,255,0.35); white-space: nowrap; }
+  .provider-name { font-family: 'Barlow Condensed', sans-serif; font-size: 13px; font-weight: 800; letter-spacing: 1px; text-transform: uppercase; color: #ffffff; white-space: nowrap; }
+  .provider-status { font-size: 11px; font-weight: 300; color: rgba(255,255,255,0.7); white-space: nowrap; }
   .status-divider { width: 1px; height: 16px; background: rgba(255,255,255,0.08); }
-  .status-updated { margin-left: 24px; font-size: 10px; font-weight: 300; color: rgba(255,255,255,0.2); white-space: nowrap; }
+  .status-updated { display: none; }
 
   /* ── CALL AI HUB ── */
   .bg-video {
-    position: fixed; top: 0; left: 0;
+    position: absolute; top: 0; left: 0;
     width: 100%; height: 100%;
-    object-fit: cover; z-index: 0; opacity: 0.4;
+    object-fit: cover; z-index: 0; opacity: 0.6;
   }
 
   .bg-overlay {
-    position: fixed; inset: 0;
-    background: rgba(13,42,71,0.75); z-index: 0;
+    position: absolute; inset: 0;
+    background: rgba(13,42,71,0.45); z-index: 0;
   }
 
   .hub {
@@ -281,6 +281,19 @@
     flex: 1;
   }
 
+  .story-btn::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: url("https://raw.githubusercontent.com/TravisWSlusser/QlikMindtickleApps/main/images/MetalPlate.png") center/cover;
+    opacity: 0.15;
+    mix-blend-mode: luminosity;
+    pointer-events: none;
+    z-index: 0;
+  }
+
+  .story-btn > * { position: relative; z-index: 1; }
+
   .story-btn {
     display: flex;
     flex-direction: column;
@@ -289,10 +302,7 @@
     gap: 4px;
     padding: 14px 40px;
     min-width: 200px;
-    background: 
-      url("https://raw.githubusercontent.com/TravisWSlusser/QlikMindtickleApps/main/images/MetalPlate.png") center/cover,
-      #94579C;
-    background-blend-mode: overlay;
+    background: #94579C;
     border: none;
     border-radius: 6px;
     text-decoration: none;
@@ -432,9 +442,9 @@
   const STATUS_TTL = 5 * 60 * 1000;
 
   const PROVIDER_META = {
-    "Claude": { url: "https://status.anthropic.com", icon: '<svg class="provider-icon" viewBox="0 0 24 24" fill="white"><path d="M17.3 3h-3.1L9.7 14.4H12l1.2-3.3h4.1l1.2 3.3h2.3L17.3 3zm-3.4 6.6 1.5-4.1 1.5 4.1h-3zM6.7 3H4.4L1 21h2.3l.9-4.1h4.1L9.2 21h2.3L8.1 3H6.7zm-2 11.6 1.5-7 1.5 7h-3z"/></svg>' },
+    "Claude": { url: "https://status.anthropic.com", icon: '<svg class="provider-icon" viewBox="0 0 24 24" fill="white"><circle cx="12" cy="12" r="10" fill="none" stroke="white" stroke-width="1.5"/><text x="12" y="16" text-anchor="middle" font-size="11" font-weight="bold" fill="white">C</text></svg>' },
     "ChatGPT": { url: "https://status.openai.com", icon: '<svg class="provider-icon" viewBox="0 0 24 24" fill="white"><path d="M22.28 9.29a5.93 5.93 0 0 0-.51-4.87 6 6 0 0 0-6.44-2.88 5.93 5.93 0 0 0-4.47-2A6 6 0 0 0 5.14 3.2a5.93 5.93 0 0 0-4 2.88 6 6 0 0 0 .74 7 5.93 5.93 0 0 0 .51 4.87 6 6 0 0 0 6.44 2.88 5.93 5.93 0 0 0 4.47 2 6 6 0 0 0 5.72-4.16 5.93 5.93 0 0 0 4-2.88 6 6 0 0 0-.74-7.3zM13.38 21a4.44 4.44 0 0 1-2.85-1l.36-.21 4.74-2.73a.77.77 0 0 0 .39-.68v-6.67l2 1.16a.07.07 0 0 1 0 .05v5.52A4.49 4.49 0 0 1 13.38 21zm-9.7-4.12a4.44 4.44 0 0 1-.53-3l.36.21 4.74 2.73a.77.77 0 0 0 .78 0L14.49 14v2.32a.08.08 0 0 1 0 .06l-4.8 2.77a4.49 4.49 0 0 1-6.01-2.27zM3.08 8.09A4.44 4.44 0 0 1 5.44 6l-.01.42v5.46a.77.77 0 0 0 .39.68l5.36 3.09-2 1.16a.08.08 0 0 1-.06 0L4.32 14a4.49 4.49 0 0 1-1.24-5.91zm16.44 3.87-5.36-3.09 2-1.16a.07.07 0 0 1 .06 0l4.8 2.77a4.49 4.49 0 0 1-.7 8.1v-.42l.01-5.46a.77.77 0 0 0-.39-.67zm2-3-.36-.21-4.74-2.73a.77.77 0 0 0-.78 0L9.51 9V6.68a.07.07 0 0 1 0-.06l4.8-2.77a4.49 4.49 0 0 1 6.67 4.65l-.46-.54zm-12.54 4.13-2-1.16a.08.08 0 0 1 0-.05V6.36a4.49 4.49 0 0 1 7.37-3.44l-.36.21-4.74 2.73a.77.77 0 0 0-.39.68l.12 6.66zm1.09-2.35L12 9.53l2 1.14v2.28l-2 1.14-2-1.15V10.7z"/></svg>' },
-    "Gemini": { url: "https://status.cloud.google.com", icon: '<svg class="provider-icon" viewBox="0 0 24 24" fill="white"><path d="M12 24A14.3 14.3 0 0 1 9.8 12 14.3 14.3 0 0 1 12 0a14.3 14.3 0 0 1 2.2 12A14.3 14.3 0 0 1 12 24zm0 0a14.3 14.3 0 0 1-12-2.2A14.3 14.3 0 0 1 12 9.8a14.3 14.3 0 0 1 12 2.2A14.3 14.3 0 0 1 12 24z"/></svg>' }
+    "Gemini": { url: "https://status.cloud.google.com", icon: '<svg class="provider-icon" viewBox="0 0 24 24" fill="white"><path d="M12 2l2.5 7.5H22l-6.5 4.5 2.5 7.5L12 17l-6 4.5 2.5-7.5L3 9.5h7.5z"/></svg>' }
   };
 
   function getStatusLabel(status) {
