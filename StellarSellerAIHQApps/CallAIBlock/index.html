@@ -1,0 +1,226 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Call AI Hub</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&family=Barlow+Condensed:wght@700;800;900&display=swap" rel="stylesheet">
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    background: #006580;
+    font-family: 'Inter', sans-serif;
+    overflow: hidden;
+    position: relative;
+  }
+
+  .bg-video {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    z-index: 0;
+    opacity: 0.4;
+  }
+
+  .hub {
+    min-height: 120px;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
+    padding: 16px 32px;
+    gap: 24px;
+    background: transparent;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .hub::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: repeating-linear-gradient(
+      45deg,
+      transparent,
+      transparent 40px,
+      rgba(255,255,255,0.015) 40px,
+      rgba(255,255,255,0.015) 80px
+    );
+    pointer-events: none;
+  }
+
+  .hub-icon {
+    width: 72px;
+    height: 72px;
+    opacity: 0.95;
+    flex-shrink: 0;
+    z-index: 1;
+  }
+
+  .hub-right {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 10px;
+    z-index: 1;
+  }
+
+  .hub-title {
+    font-family: 'Barlow Condensed', sans-serif;
+    font-size: 14px;
+    font-weight: 800;
+    letter-spacing: 2.5px;
+    color: #ffffff;
+    text-transform: uppercase;
+  }
+
+  .buttons {
+    display: flex;
+    gap: 10px;
+    flex-wrap: wrap;
+  }
+
+  .btn {
+    position: relative;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 0 16px;
+    height: 36px;
+    background: rgba(255,255,255,0.1);
+    border: 1px solid rgba(255,255,255,0.2);
+    border-radius: 8px;
+    text-decoration: none;
+    color: #fff;
+    white-space: nowrap;
+    overflow: hidden;
+    transition: transform 0.2s ease, box-shadow 0.2s ease, background 0.2s ease, border-color 0.2s ease;
+    cursor: pointer;
+  }
+
+  .btn::after {
+    content: '';
+    position: absolute;
+    top: -50%;
+    left: 0;
+    width: 50%;
+    height: 200%;
+    background: linear-gradient(
+      105deg,
+      transparent 40%,
+      rgba(255,255,255,0.25) 50%,
+      transparent 60%
+    );
+    transform: skewX(-15deg) translateX(-200%);
+    transition: transform 0.5s ease;
+    pointer-events: none;
+  }
+
+  .btn:hover::after {
+    transform: skewX(-15deg) translateX(400%);
+  }
+
+  .btn:hover {
+    transform: translateY(-3px) scale(1.03);
+    box-shadow: 0 8px 24px rgba(0,0,0,0.3), 0 0 20px rgba(16, 207, 201, 0.2);
+    background: rgba(255,255,255,0.18);
+    border-color: rgba(255,255,255,0.4);
+  }
+
+  .btn:active {
+    transform: translateY(-1px) scale(1.01);
+  }
+
+  .btn-icon {
+    width: 14px;
+    height: 14px;
+    opacity: 0.85;
+    flex-shrink: 0;
+  }
+
+  .btn-label {
+    font-weight: 600;
+    font-size: 12px;
+    color: rgba(255,255,255,0.9);
+  }
+
+  .btn-tooltip {
+    position: absolute;
+    bottom: calc(100% + 8px);
+    left: 50%;
+    transform: translateX(-50%);
+    background: #0d2a47;
+    color: rgba(255,255,255,0.85);
+    font-size: 11px;
+    font-weight: 400;
+    padding: 5px 10px;
+    border-radius: 5px;
+    white-space: nowrap;
+    pointer-events: none;
+    opacity: 0;
+    transition: opacity 0.2s;
+    border: 1px solid rgba(255,255,255,0.1);
+    z-index: 10;
+  }
+
+  .btn-tooltip::after {
+    content: '';
+    position: absolute;
+    top: 100%;
+    left: 50%;
+    transform: translateX(-50%);
+    border: 5px solid transparent;
+    border-top-color: #0d2a47;
+  }
+
+  .btn:hover .btn-tooltip { opacity: 1; }
+</style>
+</head>
+<body>
+
+<video class="bg-video" autoplay loop muted playsinline>
+  <source src="https://raw.githubusercontent.com/TravisWSlusser/QlikMindtickleApps/main/images/CallAIBG_LOOP1.webm" type="video/webm">
+</video>
+
+<div class="hub">
+  <img src="https://raw.githubusercontent.com/TravisWSlusser/QlikMindtickleApps/main/images/CallAIcon.png" class="hub-icon" alt="Call AI">
+
+  <div class="hub-right">
+    <span class="hub-title">Call AI — Communications Hub</span>
+
+    <div class="buttons">
+
+      <a class="btn" href="https://qlik.mindtickle.com/new/ui/callai/recordings?navKey=myRecordings" target="_blank" rel="noopener noreferrer">
+        <svg class="btn-icon" viewBox="0 0 24 24" fill="white"><path d="M12 2a10 10 0 1 0 10 10A10 10 0 0 0 12 2zm0 18a8 8 0 1 1 8-8 8 8 0 0 1-8 8zm-1-5h2v2h-2zm0-8h2v6h-2z"/></svg>
+        <span class="btn-label">My Recordings</span>
+        <span class="btn-tooltip">Click to view your personal Call AI recordings</span>
+      </a>
+
+      <a class="btn" href="https://qlik.mindtickle.com/new/ui/callai/recordings?navKey=allRecordings" target="_blank" rel="noopener noreferrer">
+        <svg class="btn-icon" viewBox="0 0 24 24" fill="white"><path d="M19 3H5a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V5a2 2 0 0 0-2-2zm-7 14-5-5 1.41-1.41L12 14.17l7.59-7.59L21 8z"/></svg>
+        <span class="btn-label">All Recordings</span>
+        <span class="btn-tooltip">Click to browse all Call AI recordings</span>
+      </a>
+
+      <a class="btn" href="https://qlik.mindtickle.com/new/ui/callai/recordings?navKey=shared" target="_blank" rel="noopener noreferrer">
+        <svg class="btn-icon" viewBox="0 0 24 24" fill="white"><path d="M18 16.08c-.76 0-1.44.3-1.96.77L8.91 12.7c.05-.23.09-.46.09-.7s-.04-.47-.09-.7l7.05-4.11c.54.5 1.25.81 2.04.81a3 3 0 0 0 0-6 3 3 0 0 0-3 3c0 .24.04.47.09.7L8.04 9.81A2.99 2.99 0 0 0 6 9a3 3 0 0 0 0 6c.79 0 1.5-.31 2.04-.81l7.12 4.15c-.05.21-.08.43-.08.66a2.92 2.92 0 1 0 2.92-2.92z"/></svg>
+        <span class="btn-label">Shared Recordings</span>
+        <span class="btn-tooltip">Click to view recordings shared with you</span>
+      </a>
+
+      <a class="btn" href="https://qlik.mindtickle.com/new/ui/callai/recordings?navKey=bookmarked" target="_blank" rel="noopener noreferrer">
+        <svg class="btn-icon" viewBox="0 0 24 24" fill="white"><path d="M17 3H7a2 2 0 0 0-2 2v16l7-3 7 3V5a2 2 0 0 0-2-2z"/></svg>
+        <span class="btn-label">Bookmarked</span>
+        <span class="btn-tooltip">Click to view your bookmarked recordings</span>
+      </a>
+
+    </div>
+  </div>
+</div>
+
+</body>
+</html>
