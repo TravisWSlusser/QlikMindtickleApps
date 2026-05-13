@@ -37,7 +37,7 @@
     flex-direction: row;
     align-items: center;
     justify-content: center;
-    padding: 12px 32px;
+    padding: 18px 32px;
     gap: 24px;
     background: transparent;
     position: relative;
@@ -102,7 +102,7 @@
 
   .hub-icon img {
     height: 100%;
-    max-height: 110px;
+    max-height: 121px;
     width: auto;
     opacity: 0.95;
   }
@@ -209,7 +209,7 @@
     color: #10CFC9;
     white-space: nowrap;
     display: inline-block;
-    transform: translateX(100vw);
+    transform: translateX(120%);
   }
 
   .terminal-text.slide-in {
@@ -397,6 +397,7 @@
 
   // Remove CSS animation classes - using inline styles instead
   el.className = 'terminal-text';
+  el.style.transform = 'translateX(120%)';
   showTip();
 </script>
 </body>
