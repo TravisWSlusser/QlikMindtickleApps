@@ -70,7 +70,10 @@
   /* Content area */
   .content {
     position: absolute;
-    inset: 0;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 30px;
     z-index: 2;
     display: flex;
     align-items: center;
@@ -314,11 +317,7 @@
     el.className = 'tip-msg';
     el.id = `tip-${i}`;
     el.innerHTML = `
-      <div class="tip-tag">
-        <span class="tip-number">Tip ${i + 1} of ${tips.length}</span>
-        <span class="tip-label">·</span>
-        <span class="tip-label">AI-HQ</span>
-      </div>
+
       <div class="tip-text">${tip.text}</div>
       <div class="tip-category">${tip.category}</div>
     `;
