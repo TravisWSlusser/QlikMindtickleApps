@@ -4,7 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Call AI Hub</title>
-<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&family=Barlow+Condensed:wght@700;800;900&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&family=Barlow+Condensed:wght@700;800;900&family=Share+Tech+Mono&display=swap" rel="stylesheet">
 <style>
   * { margin: 0; padding: 0; box-sizing: border-box; }
 
@@ -17,10 +17,8 @@
 
   .bg-video {
     position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
+    top: 0; left: 0;
+    width: 100%; height: 100%;
     object-fit: cover;
     z-index: 0;
     opacity: 0.4;
@@ -34,33 +32,87 @@
   }
 
   .hub {
-    min-height: 100px;
+    min-height: 140px;
     display: flex;
     flex-direction: row;
     align-items: center;
     justify-content: center;
-    padding: 8px 32px;
+    padding: 12px 32px;
     gap: 24px;
     background: transparent;
     position: relative;
     overflow: hidden;
-    border-top: 2px solid #009845;
-    border-bottom: 2px solid #009845;
+    border-top: 3px solid #009845;
+    border-bottom: 3px solid #009845;
   }
 
+  /* Gleam lines */
+  .gleam-top, .gleam-bottom {
+    position: absolute;
+    left: 0;
+    width: 100%;
+    height: 3px;
+    background: #009845;
+    z-index: 5;
+    overflow: hidden;
+  }
+
+  .gleam-top { top: 0; }
+  .gleam-bottom { bottom: 0; }
+
+  .gleam-top::after {
+    content: '';
+    position: absolute;
+    top: 0; left: 0;
+    width: 30%; height: 100%;
+    background: linear-gradient(90deg, transparent, #38B795, transparent);
+    transform: skewX(-15deg) translateX(-200%);
+    animation: gleam-right 6s ease-in-out infinite;
+  }
+
+  .gleam-bottom::after {
+    content: '';
+    position: absolute;
+    top: 0; right: 0;
+    width: 30%; height: 100%;
+    background: linear-gradient(90deg, transparent, #38B795, transparent);
+    transform: skewX(-15deg) translateX(200%);
+    animation: gleam-left 6s ease-in-out infinite;
+    animation-delay: 3s;
+  }
+
+  @keyframes gleam-right {
+    0% { transform: skewX(-15deg) translateX(-200%); }
+    100% { transform: skewX(-15deg) translateX(600%); }
+  }
+
+  @keyframes gleam-left {
+    0% { transform: skewX(-15deg) translateX(200%); }
+    100% { transform: skewX(-15deg) translateX(-600%); }
+  }
+
+  /* Icon — matches height of right column */
   .hub-icon {
-    width: 144px;
-    height: 144px;
-    opacity: 0.95;
     flex-shrink: 0;
     z-index: 1;
+    align-self: stretch;
+    display: flex;
+    align-items: center;
   }
 
+  .hub-icon img {
+    height: 100%;
+    max-height: 110px;
+    width: auto;
+    opacity: 0.95;
+  }
+
+  /* Right column */
   .hub-right {
     display: flex;
     flex-direction: column;
     align-items: flex-start;
-    gap: 10px;
+    gap: 8px;
     z-index: 1;
   }
 
@@ -100,24 +152,15 @@
   .btn::after {
     content: '';
     position: absolute;
-    top: -50%;
-    left: 0;
-    width: 50%;
-    height: 200%;
-    background: linear-gradient(
-      105deg,
-      transparent 40%,
-      rgba(255,255,255,0.25) 50%,
-      transparent 60%
-    );
+    top: -50%; left: 0;
+    width: 50%; height: 200%;
+    background: linear-gradient(105deg, transparent 40%, rgba(255,255,255,0.25) 50%, transparent 60%);
     transform: skewX(-15deg) translateX(-200%);
     transition: transform 0.5s ease;
     pointer-events: none;
   }
 
-  .btn:hover::after {
-    transform: skewX(-15deg) translateX(400%);
-  }
+  .btn:hover::after { transform: skewX(-15deg) translateX(400%); }
 
   .btn:hover {
     transform: translateY(-3px) scale(1.03);
@@ -126,15 +169,11 @@
     border-color: #009845;
   }
 
-  .btn:active {
-    transform: translateY(-1px) scale(1.01);
-  }
+  .btn:active { transform: translateY(-1px) scale(1.01); }
 
   .btn-icon {
-    width: 14px;
-    height: 14px;
-    opacity: 0.85;
-    flex-shrink: 0;
+    width: 14px; height: 14px;
+    opacity: 0.85; flex-shrink: 0;
   }
 
   .btn-label {
@@ -143,6 +182,55 @@
     color: rgba(255,255,255,0.9);
   }
 
+  /* Terminal tip box */
+  .terminal-box {
+    background: rgba(5, 15, 30, 0.85);
+    border: 1px solid rgba(16, 207, 201, 0.25);
+    border-radius: 4px;
+    padding: 5px 12px;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    overflow: hidden;
+    width: 100%;
+    box-sizing: border-box;
+  }
+
+  .terminal-prefix {
+    font-family: 'Share Tech Mono', monospace;
+    font-size: 11px;
+    color: #009845;
+    flex-shrink: 0;
+  }
+
+  .terminal-text {
+    font-family: 'Share Tech Mono', monospace;
+    font-size: 11px;
+    color: #10CFC9;
+    white-space: nowrap;
+    display: inline-block;
+    transform: translateX(100vw);
+  }
+
+  .terminal-text.slide-in {
+    animation: termIn 0.6s ease forwards;
+  }
+
+  .terminal-text.slide-out {
+    animation: termOut 0.5s ease forwards;
+  }
+
+  @keyframes termIn {
+    from { transform: translateX(100vw); }
+    to { transform: translateX(0); }
+  }
+
+  @keyframes termOut {
+    from { transform: translateX(0); }
+    to { transform: translateX(-100vw); }
+  }
+
+  /* Tooltip */
   .btn-tooltip {
     position: absolute;
     bottom: calc(100% + 8px);
@@ -165,8 +253,7 @@
   .btn-tooltip::after {
     content: '';
     position: absolute;
-    top: 100%;
-    left: 50%;
+    top: 100%; left: 50%;
     transform: translateX(-50%);
     border: 5px solid transparent;
     border-top-color: #0d2a47;
@@ -183,40 +270,134 @@
 <div class="bg-overlay"></div>
 
 <div class="hub">
-  <img src="https://raw.githubusercontent.com/TravisWSlusser/QlikMindtickleApps/main/images/CallAIIcon.png" class="hub-icon" alt="Call AI">
+  <div class="gleam-top"></div>
+  <div class="gleam-bottom"></div>
+
+  <div class="hub-icon">
+    <img src="https://raw.githubusercontent.com/TravisWSlusser/QlikMindtickleApps/main/images/CallAIIcon.png" alt="Call AI">
+  </div>
 
   <div class="hub-right">
-    <span class="hub-title">Call AI — Communications Hub</span>
+    <span class="hub-title">Call AI — <span style="color:#10CFC9;">COMMAND CENTER</span></span>
 
     <div class="buttons">
-
       <a class="btn" href="https://qlik.mindtickle.com/new/ui/callai/recordings?navKey=myRecordings" target="_blank" rel="noopener noreferrer">
         <svg class="btn-icon" viewBox="0 0 24 24" fill="white"><path d="M12 2a10 10 0 1 0 10 10A10 10 0 0 0 12 2zm0 18a8 8 0 1 1 8-8 8 8 0 0 1-8 8zm-1-5h2v2h-2zm0-8h2v6h-2z"/></svg>
         <span class="btn-label">My Recordings</span>
         <span class="btn-tooltip">Click to view your personal Call AI recordings</span>
       </a>
-
       <a class="btn" href="https://qlik.mindtickle.com/new/ui/callai/recordings?navKey=allRecordings" target="_blank" rel="noopener noreferrer">
         <svg class="btn-icon" viewBox="0 0 24 24" fill="white"><path d="M19 3H5a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V5a2 2 0 0 0-2-2zm-7 14-5-5 1.41-1.41L12 14.17l7.59-7.59L21 8z"/></svg>
         <span class="btn-label">All Recordings</span>
         <span class="btn-tooltip">Click to browse all Call AI recordings</span>
       </a>
-
       <a class="btn" href="https://qlik.mindtickle.com/new/ui/callai/recordings?navKey=shared" target="_blank" rel="noopener noreferrer">
         <svg class="btn-icon" viewBox="0 0 24 24" fill="white"><path d="M18 16.08c-.76 0-1.44.3-1.96.77L8.91 12.7c.05-.23.09-.46.09-.7s-.04-.47-.09-.7l7.05-4.11c.54.5 1.25.81 2.04.81a3 3 0 0 0 0-6 3 3 0 0 0-3 3c0 .24.04.47.09.7L8.04 9.81A2.99 2.99 0 0 0 6 9a3 3 0 0 0 0 6c.79 0 1.5-.31 2.04-.81l7.12 4.15c-.05.21-.08.43-.08.66a2.92 2.92 0 1 0 2.92-2.92z"/></svg>
         <span class="btn-label">Shared Recordings</span>
         <span class="btn-tooltip">Click to view recordings shared with you</span>
       </a>
-
       <a class="btn" href="https://qlik.mindtickle.com/new/ui/callai/recordings?navKey=bookmarked" target="_blank" rel="noopener noreferrer">
         <svg class="btn-icon" viewBox="0 0 24 24" fill="white"><path d="M17 3H7a2 2 0 0 0-2 2v16l7-3 7 3V5a2 2 0 0 0-2-2z"/></svg>
         <span class="btn-label">Bookmarked</span>
         <span class="btn-tooltip">Click to view your bookmarked recordings</span>
       </a>
+    </div>
 
+    <div class="terminal-box">
+      <span class="terminal-prefix">></span>
+      <span class="terminal-text" id="termText"></span>
     </div>
   </div>
 </div>
 
+<script>
+  const tips = [
+    'Your last call is already transcribed — take 2 minutes and read it back.',
+    'Find a top performer's recording. Listen for how they handle objections.',
+    'Call AI spots buying signals you might have missed. Check your last recording.',
+    'Before your next call, review your last one. One small adjustment can change the outcome.',
+    'Someone shared a call with you — go listen.',
+    'Your bookmarks are only useful if you revisit them. Pick one today.',
+    'Call AI scores every call. Do you know how yours stacks up?',
+    'The best sellers review their own calls. It's uncomfortable. Do it anyway.',
+    'A 5-minute call review today can save a deal next week.',
+    'AI caught what you were too busy to notice. Go find out what it flagged.'
+  ];
+
+  const CHARS = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789@#$%&!?><[]{}';
+  let current = 0;
+  const el = document.getElementById('termText');
+  let glitchTimer = null;
+
+  function rand() {
+    return CHARS[Math.floor(Math.random() * CHARS.length)];
+  }
+
+  function glitch(original, resolving, frames, interval, callback) {
+    let i = 0;
+    clearInterval(glitchTimer);
+    glitchTimer = setInterval(() => {
+      const progress = i / frames;
+      el.textContent = original.split('').map(char => {
+        if (char === ' ') return ' ';
+        if (resolving) {
+          return Math.random() < (1 - progress) ? rand() : char;
+        } else {
+          return Math.random() < progress ? rand() : char;
+        }
+      }).join('');
+      i++;
+      if (i >= frames) {
+        clearInterval(glitchTimer);
+        if (resolving) el.textContent = original;
+        if (callback) callback();
+      }
+    }, interval);
+  }
+
+  function slideIn(tip, callback) {
+    el.style.transition = 'none';
+    el.style.transform = 'translateX(120%)';
+    el.textContent = tip;
+    el.style.color = '#10CFC9';
+    requestAnimationFrame(() => {
+      requestAnimationFrame(() => {
+        el.style.transition = 'transform 0.6s ease';
+        el.style.transform = 'translateX(0)';
+        setTimeout(callback, 650);
+      });
+    });
+  }
+
+  function slideOut(callback) {
+    el.style.transition = 'transform 0.6s ease';
+    el.style.transform = 'translateX(-120%)';
+    setTimeout(callback, 650);
+  }
+
+  function showTip() {
+    const tip = tips[current];
+
+    slideIn(tip, () => {
+      // Glitch in
+      glitch(tip, true, 25, 35, () => {
+        // Hold for 12 seconds
+        setTimeout(() => {
+          // Glitch out
+          glitch(tip, false, 20, 35, () => {
+            slideOut(() => {
+              current = (current + 1) % tips.length;
+              showTip();
+            });
+          });
+        }, 12000);
+      });
+    });
+  }
+
+  // Remove CSS animation classes - using inline styles instead
+  el.className = 'terminal-text';
+  showTip();
+</script>
 </body>
 </html>
