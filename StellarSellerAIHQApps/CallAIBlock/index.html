@@ -34,30 +34,18 @@
   }
 
   .hub {
-    min-height: 120px;
+    min-height: 100px;
     display: flex;
     flex-direction: row;
     align-items: center;
     justify-content: center;
-    padding: 16px 32px;
+    padding: 8px 32px;
     gap: 24px;
     background: transparent;
     position: relative;
     overflow: hidden;
-  }
-
-  .hub::before {
-    content: '';
-    position: absolute;
-    inset: 0;
-    background: repeating-linear-gradient(
-      45deg,
-      transparent,
-      transparent 40px,
-      rgba(255,255,255,0.015) 40px,
-      rgba(255,255,255,0.015) 80px
-    );
-    pointer-events: none;
+    border-top: 2px solid #009845;
+    border-bottom: 2px solid #009845;
   }
 
   .hub-icon {
