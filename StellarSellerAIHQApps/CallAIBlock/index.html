@@ -191,9 +191,9 @@
     display: flex;
     align-items: center;
     gap: 6px;
-    overflow: hidden;
     width: 100%;
     box-sizing: border-box;
+    overflow: hidden;
   }
 
   .terminal-prefix {
@@ -209,26 +209,9 @@
     color: #10CFC9;
     white-space: nowrap;
     display: inline-block;
-    transform: translateX(120%);
   }
 
-  .terminal-text.slide-in {
-    animation: termIn 0.6s ease forwards;
-  }
 
-  .terminal-text.slide-out {
-    animation: termOut 0.5s ease forwards;
-  }
-
-  @keyframes termIn {
-    from { transform: translateX(100vw); }
-    to { transform: translateX(0); }
-  }
-
-  @keyframes termOut {
-    from { transform: translateX(0); }
-    to { transform: translateX(-100vw); }
-  }
 
   /* Tooltip */
   .btn-tooltip {
