@@ -23,7 +23,14 @@
     height: 100%;
     object-fit: cover;
     z-index: 0;
-    opacity: 0.15;
+    opacity: 0.4;
+  }
+
+  .bg-overlay {
+    position: fixed;
+    inset: 0;
+    background: rgba(13, 42, 71, 0.75);
+    z-index: 0;
   }
 
   .hub {
@@ -54,8 +61,8 @@
   }
 
   .hub-icon {
-    width: 72px;
-    height: 72px;
+    width: 144px;
+    height: 144px;
     opacity: 0.95;
     flex-shrink: 0;
     z-index: 1;
@@ -185,6 +192,7 @@
 <video class="bg-video" autoplay loop muted playsinline>
   <source src="https://raw.githubusercontent.com/TravisWSlusser/QlikMindtickleApps/main/images/CallAIBG_LOOP1.webm" type="video/webm">
 </video>
+<div class="bg-overlay"></div>
 
 <div class="hub">
   <img src="https://raw.githubusercontent.com/TravisWSlusser/QlikMindtickleApps/main/images/CallAIIcon.png" class="hub-icon" alt="Call AI">
