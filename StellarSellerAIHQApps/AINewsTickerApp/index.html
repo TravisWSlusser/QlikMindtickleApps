@@ -1,1 +1,236 @@
 
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>AI News Ticker</title>
+<link href="https://fonts.googleapis.com/css2?family=Barlow:wght@600;700&family=Barlow+Condensed:wght@800&display=swap" rel="stylesheet">
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    background: #009845;
+    overflow: hidden;
+    font-family: 'Barlow', sans-serif;
+  }
+
+  .ticker-wrap {
+    display: flex;
+    align-items: center;
+    height: 36px;
+    background: #009845;
+    overflow: hidden;
+  }
+
+  .ticker-label {
+    flex-shrink: 0;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    padding: 0 16px;
+    gap: 8px;
+    background: rgba(0,0,0,0.15);
+    border-right: 2px solid rgba(255,255,255,0.2);
+  }
+
+  .live-dot {
+    width: 7px;
+    height: 7px;
+    background: #fff;
+    border-radius: 50%;
+    animation: blink 1.2s ease-in-out infinite;
+  }
+
+  @keyframes blink {
+    0%, 100% { opacity: 1; }
+    50% { opacity: 0.2; }
+  }
+
+  .ticker-label span {
+    font-family: 'Barlow Condensed', sans-serif;
+    font-size: 13px;
+    font-weight: 800;
+    letter-spacing: 2px;
+    color: #fff;
+    text-transform: uppercase;
+    white-space: nowrap;
+  }
+
+  .ticker-outer {
+    flex: 1;
+    overflow: hidden;
+    height: 100%;
+    position: relative;
+  }
+
+  .ticker-track {
+    display: flex;
+    align-items: center;
+    height: 100%;
+    white-space: nowrap;
+    will-change: transform;
+  }
+
+  .ticker-item {
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    padding: 0 40px 0 0;
+    cursor: pointer;
+    text-decoration: none;
+  }
+
+  .source-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 5px;
+    flex-shrink: 0;
+  }
+
+  .source-favicon {
+    width: 13px;
+    height: 13px;
+    border-radius: 2px;
+    filter: brightness(0) invert(1);
+    opacity: 0.8;
+  }
+
+  .source-name {
+    font-family: 'Barlow Condensed', sans-serif;
+    font-size: 12px;
+    font-weight: 800;
+    color: rgba(255,255,255,0.75);
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    white-space: nowrap;
+  }
+
+  .headline {
+    font-size: 13px;
+    font-weight: 600;
+    color: #fff;
+    white-space: nowrap;
+    transition: opacity 0.2s;
+  }
+
+  .ticker-item:hover .headline {
+    opacity: 0.75;
+  }
+
+  .separator {
+    color: rgba(255,255,255,0.4);
+    font-size: 14px;
+    padding-left: 40px;
+  }
+
+  .loading {
+    color: rgba(255,255,255,0.7);
+    font-size: 13px;
+    font-weight: 600;
+    padding-left: 20px;
+  }
+</style>
+</head>
+<body>
+
+<div class="ticker-wrap">
+  <div class="ticker-outer">
+    <div class="ticker-track" id="ticker">
+      <span class="loading">Loading latest AI news...</span>
+    </div>
+  </div>
+</div>
+
+<script>
+  const VERCEL_API = 'https://qlik-mindtickle-apps.vercel.app/api/news';
+  const CACHE_KEY = 'ss_news_cache';
+  const CACHE_TTL = 4 * 60 * 60 * 1000;
+
+  let animationId;
+  let position = 0;
+  let trackWidth = 0;
+
+  function getDomain(url) {
+    try { return new URL(url).hostname.replace('www.', ''); }
+    catch { return ''; }
+  }
+
+  function buildTicker(articles) {
+    const track = document.getElementById('ticker');
+    track.innerHTML = '';
+
+    articles.forEach((article) => {
+      const domain = getDomain(article.url);
+      const sourceName = article.source?.name || domain;
+
+      const item = document.createElement('a');
+      item.className = 'ticker-item';
+      item.href = article.url;
+      item.target = '_blank';
+      item.rel = 'noopener noreferrer';
+
+      item.innerHTML = `
+        <div class="source-badge">
+          <img class="source-favicon"
+            src="https://www.google.com/s2/favicons?domain=${domain}&sz=16"
+            onerror="this.style.display='none'"
+            alt="">
+          <span class="source-name">${sourceName}</span>
+        </div>
+        <span class="headline">${article.title}</span>
+        <span class="separator">◆</span>
+      `;
+
+      track.appendChild(item);
+    });
+
+    track.innerHTML += track.innerHTML;
+    trackWidth = track.scrollWidth / 2;
+    startAnimation();
+  }
+
+  function startAnimation() {
+    const track = document.getElementById('ticker');
+    const speed = 0.5;
+
+    function animate() {
+      position -= speed;
+      if (Math.abs(position) >= trackWidth) position = 0;
+      track.style.transform = `translateX(${position}px)`;
+      animationId = requestAnimationFrame(animate);
+    }
+
+    animate();
+
+    const outer = document.querySelector('.ticker-outer');
+    outer.addEventListener('mouseenter', () => cancelAnimationFrame(animationId));
+    outer.addEventListener('mouseleave', () => { animate(); });
+  }
+
+  async function loadNews() {
+    try {
+      const cached = localStorage.getItem(CACHE_KEY);
+      if (cached) {
+        const { data, timestamp } = JSON.parse(cached);
+        if (Date.now() - timestamp < CACHE_TTL) { buildTicker(data); return; }
+      }
+    } catch(e) {}
+
+    try {
+      const res = await fetch(VERCEL_API);
+      const json = await res.json();
+      const articles = json.articles || [];
+      if (articles.length) {
+        localStorage.setItem(CACHE_KEY, JSON.stringify({ data: articles, timestamp: Date.now() }));
+        buildTicker(articles);
+      }
+    } catch(e) {
+      document.getElementById('ticker').innerHTML = '<span class="loading">Unable to load news feed.</span>';
+    }
+  }
+
+  loadNews();
+</script>
+</body>
+</html>
