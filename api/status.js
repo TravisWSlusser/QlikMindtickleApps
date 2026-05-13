@@ -10,7 +10,6 @@ async function fetchAtlassian(name, url) {
 }
 
 async function fetchGemini(name) {
-  // Google Cloud status — check for any active incidents
   const response = await fetch('https://status.cloud.google.com/incidents.json', { signal: AbortSignal.timeout(5000) });
   const data = await response.json();
   const activeIncidents = data.filter(i => !i.end);
@@ -19,8 +18,7 @@ async function fetchGemini(name) {
 }
 
 async function fetchCopilot(name) {
-  // Microsoft 365 status
-  const response = await fetch('https://status.azure.com/api/v2/status.json', { signal: AbortSignal.timeout(5000) });
+  const response = await fetch('https://azure.status.microsoft/api/v2/status.json', { signal: AbortSignal.timeout(5000) });
   const data = await response.json();
   const indicator = data.status?.indicator || 'none';
   const status = indicator === 'none' ? 'operational' : indicator;
@@ -43,8 +41,8 @@ export default async function handler(req, res) {
     fetchCopilot('Copilot')
   ]);
 
+  const names = ['Claude', 'ChatGPT', 'Gemini', 'Copilot'];
   const statuses = results.map((result, i) => {
-    const names = ['Claude', 'ChatGPT', 'Gemini', 'Copilot'];
     if (result.status === 'fulfilled') return result.value;
     return { name: names[i], status: 'unknown', description: 'Unable to reach' };
   });
