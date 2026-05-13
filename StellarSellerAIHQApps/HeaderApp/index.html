@@ -3,237 +3,280 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>AI News Ticker</title>
-<link href="https://fonts.googleapis.com/css2?family=Barlow:wght@600;700&family=Barlow+Condensed:wght@800&display=swap" rel="stylesheet">
+<title>Stellar-Seller AI-HQ Header</title>
+<link href="https://fonts.googleapis.com/css2?family=Barlow:wght@400;600;700;800;900&family=Barlow+Condensed:wght@700;800;900&display=swap" rel="stylesheet">
 <style>
   * { margin: 0; padding: 0; box-sizing: border-box; }
 
+  :root {
+    --deep-blue: #19426C;
+    --green: #009845;
+    --sky: #10CFC9;
+    --ocean: #006580;
+    --white: #ffffff;
+    --purple: #8B5CF6;
+  }
+
   body {
-    background: #009845;
-    overflow: hidden;
+    background: transparent;
     font-family: 'Barlow', sans-serif;
-  }
-
-  .ticker-wrap {
-    display: flex;
-    align-items: center;
-    height: 36px;
-    background: #009845;
     overflow: hidden;
   }
 
-  .ticker-label {
-    flex-shrink: 0;
-    height: 100%;
+  .header {
+    background: linear-gradient(135deg, #0d2a47 0%, #19426C 40%, #0f3a5c 100%);
+    border-bottom: 2px solid var(--sky);
+    padding: 0 24px;
+    height: 64px;
     display: flex;
     align-items: center;
-    padding: 0 16px;
-    gap: 8px;
-    background: rgba(0,0,0,0.15);
-    border-right: 2px solid rgba(255,255,255,0.2);
+    justify-content: space-between;
+    position: relative;
+    overflow: hidden;
   }
 
-  .live-dot {
+  /* Subtle scanline effect */
+  .header::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: repeating-linear-gradient(
+      0deg,
+      transparent,
+      transparent 2px,
+      rgba(16, 207, 201, 0.03) 2px,
+      rgba(16, 207, 201, 0.03) 4px
+    );
+    pointer-events: none;
+  }
+
+  /* Animated teal glow line at bottom */
+  .header::after {
+    content: '';
+    position: absolute;
+    bottom: -2px;
+    left: -100%;
+    width: 60%;
+    height: 2px;
+    background: linear-gradient(90deg, transparent, var(--sky), transparent);
+    animation: scanline 4s ease-in-out infinite;
+  }
+
+  @keyframes scanline {
+    0% { left: -60%; }
+    100% { left: 120%; }
+  }
+
+  /* LEFT — Branding */
+  .header-left {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    z-index: 1;
+  }
+
+  .badge {
+    background: linear-gradient(135deg, var(--green), #007a38);
+    border-radius: 6px;
+    padding: 4px 10px;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    box-shadow: 0 0 12px rgba(0, 152, 69, 0.4);
+  }
+
+  .badge-dot {
     width: 7px;
     height: 7px;
     background: #fff;
     border-radius: 50%;
-    animation: blink 1.2s ease-in-out infinite;
+    animation: pulse 2s ease-in-out infinite;
   }
 
-  @keyframes blink {
-    0%, 100% { opacity: 1; }
-    50% { opacity: 0.2; }
+  @keyframes pulse {
+    0%, 100% { opacity: 1; transform: scale(1); }
+    50% { opacity: 0.5; transform: scale(0.8); }
   }
 
-  .ticker-label span {
+  .badge-text {
     font-family: 'Barlow Condensed', sans-serif;
-    font-size: 13px;
+    font-size: 11px;
     font-weight: 800;
-    letter-spacing: 2px;
+    letter-spacing: 1.5px;
     color: #fff;
     text-transform: uppercase;
-    white-space: nowrap;
   }
 
-  .ticker-outer {
-    flex: 1;
-    overflow: hidden;
-    height: 100%;
-    position: relative;
-    -webkit-mask-image: linear-gradient(90deg, transparent 0%, black 8%, black 92%, transparent 100%);
-    mask-image: linear-gradient(90deg, transparent 0%, black 8%, black 92%, transparent 100%);
-  }
-
-  .ticker-track {
+  .title-block {
     display: flex;
-    align-items: center;
-    height: 100%;
-    white-space: nowrap;
-    will-change: transform;
+    flex-direction: column;
+    line-height: 1;
   }
 
-  .ticker-item {
-    display: inline-flex;
-    align-items: center;
-    gap: 10px;
-    padding: 0 40px 0 0;
-    cursor: pointer;
-    text-decoration: none;
-  }
-
-  .source-badge {
-    display: inline-flex;
-    align-items: center;
-    gap: 5px;
-    flex-shrink: 0;
-  }
-
-  .source-favicon {
-    width: 13px;
-    height: 13px;
-    border-radius: 2px;
-    filter: brightness(0) invert(1);
-    opacity: 0.8;
-  }
-
-  .source-name {
+  .title-main {
     font-family: 'Barlow Condensed', sans-serif;
-    font-size: 12px;
-    font-weight: 800;
-    color: rgba(255,255,255,0.75);
+    font-size: 22px;
+    font-weight: 900;
+    color: var(--white);
     letter-spacing: 1px;
     text-transform: uppercase;
-    white-space: nowrap;
   }
 
-  .headline {
-    font-size: 15px;
-    font-weight: 700;
-    color: #fff;
-    white-space: nowrap;
-    transition: opacity 0.2s;
-    text-transform: uppercase;
-    letter-spacing: 0.5px;
+  .title-main span {
+    color: var(--sky);
   }
 
-  .ticker-item:hover .headline-old {
-    opacity: 0.75;
-  }
-
-  .separator {
-    color: rgba(255,255,255,0.4);
-    font-size: 14px;
-    padding-left: 40px;
-  }
-
-  .loading {
-    color: rgba(255,255,255,0.7);
-    font-size: 13px;
+  .title-sub {
+    font-size: 10px;
     font-weight: 600;
-    padding-left: 20px;
+    color: rgba(255,255,255,0.45);
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    margin-top: 2px;
+  }
+
+  /* CENTER — Status indicators */
+  .header-center {
+    display: flex;
+    align-items: center;
+    gap: 20px;
+    z-index: 1;
+  }
+
+  .status-item {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    padding: 5px 12px;
+    border-radius: 20px;
+    background: rgba(255,255,255,0.05);
+    border: 1px solid rgba(255,255,255,0.08);
+  }
+
+  .status-dot {
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    background: var(--green);
+    box-shadow: 0 0 6px var(--green);
+    animation: pulse 2s ease-in-out infinite;
+  }
+
+  .status-dot.teal {
+    background: var(--sky);
+    box-shadow: 0 0 6px var(--sky);
+    animation-delay: 0.5s;
+  }
+
+  .status-text {
+    font-size: 11px;
+    font-weight: 600;
+    color: rgba(255,255,255,0.6);
+    letter-spacing: 0.5px;
+    text-transform: uppercase;
+  }
+
+  /* RIGHT — Date & Time */
+  .header-right {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    z-index: 1;
+  }
+
+  .datetime-block {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+    line-height: 1;
+  }
+
+  .time-display {
+    font-family: 'Barlow Condensed', sans-serif;
+    font-size: 26px;
+    font-weight: 800;
+    color: var(--sky);
+    letter-spacing: 2px;
+    text-shadow: 0 0 20px rgba(16, 207, 201, 0.5);
+    font-variant-numeric: tabular-nums;
+  }
+
+  .date-display {
+    font-size: 11px;
+    font-weight: 600;
+    color: rgba(255,255,255,0.5);
+    letter-spacing: 1.5px;
+    text-transform: uppercase;
+    margin-top: 3px;
+  }
+
+  .divider {
+    width: 1px;
+    height: 32px;
+    background: rgba(255,255,255,0.1);
+  }
+
+  .timezone-badge {
+    background: rgba(16, 207, 201, 0.1);
+    border: 1px solid rgba(16, 207, 201, 0.25);
+    border-radius: 4px;
+    padding: 3px 8px;
+    font-size: 10px;
+    font-weight: 700;
+    color: var(--sky);
+    letter-spacing: 1px;
+    text-transform: uppercase;
   }
 </style>
 </head>
 <body>
+<div class="header">
+  <div class="header-left">
+    <div class="badge">
+      <div class="badge-dot"></div>
+      <span class="badge-text">Live</span>
+    </div>
+    <div class="title-block">
+      <div class="title-main">Stellar-Seller <span>AI-HQ</span></div>
+      <div class="title-sub">Powered by Global Sales Enablement</div>
+    </div>
+  </div>
 
-<div class="ticker-wrap">
-  <div class="ticker-outer">
-    <div class="ticker-track" id="ticker">
-      <span class="loading">Loading latest AI news...</span>
+  <div class="header-center"></div>
+
+  <div class="header-right">
+    <div class="timezone-badge" id="tz">...</div>
+    <div class="divider"></div>
+    <div class="datetime-block">
+      <div class="time-display" id="time">--:-- --</div>
+      <div class="date-display" id="date">--- --, ----</div>
     </div>
   </div>
 </div>
 
 <script>
-  const VERCEL_API = 'https://qlik-mindtickle-apps.vercel.app/api/news';
-  const CACHE_KEY = 'ss_news_cache';
-  const CACHE_TTL = 4 * 60 * 60 * 1000;
+  const days = ['Sunday','Monday','Tuesday','Wednesday','Thursday','Friday','Saturday'];
+  const months = ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
 
-  let animationId;
-  let position = 0;
-  let trackWidth = 0;
+  function updateClock() {
+    const now = new Date();
+    let h = now.getHours();
+    const m = now.getMinutes().toString().padStart(2, '0');
+    const s = now.getSeconds().toString().padStart(2, '0');
+    const ampm = h >= 12 ? 'PM' : 'AM';
+    h = h % 12 || 12;
 
-  function getDomain(url) {
-    try { return new URL(url).hostname.replace('www.', ''); }
-    catch { return ''; }
+    document.getElementById('time').textContent = `${h}:${m} ${ampm}`;
+    document.getElementById('date').textContent =
+      `${days[now.getDay()]}, ${months[now.getMonth()]} ${now.getDate()}, ${now.getFullYear()}`;
+
+    // Timezone abbreviation
+    const tz = now.toLocaleTimeString('en-us', { timeZoneName: 'short' }).split(' ')[2];
+    document.getElementById('tz').textContent = tz || 'LOCAL';
   }
 
-  function buildTicker(articles) {
-    const track = document.getElementById('ticker');
-    track.innerHTML = '';
-
-    articles.forEach((article) => {
-      const domain = getDomain(article.url);
-      const sourceName = article.source?.name || domain;
-
-      const item = document.createElement('a');
-      item.className = 'ticker-item';
-      item.href = article.url;
-      item.target = '_blank';
-      item.rel = 'noopener noreferrer';
-
-      item.innerHTML = `
-        <div class="source-badge">
-          <img class="source-favicon"
-            src="https://www.google.com/s2/favicons?domain=${domain}&sz=16"
-            onerror="this.style.display='none'"
-            alt="">
-          <span class="source-name">${sourceName}</span>
-        </div>
-        <span class="headline">${article.title}</span>
-        <span class="separator">◆</span>
-      `;
-
-      track.appendChild(item);
-    });
-
-    track.innerHTML += track.innerHTML;
-    trackWidth = track.scrollWidth / 2;
-    startAnimation();
-  }
-
-  function startAnimation() {
-    const track = document.getElementById('ticker');
-    const speed = 0.5;
-
-    function animate() {
-      position -= speed;
-      if (Math.abs(position) >= trackWidth) position = 0;
-      track.style.transform = `translateX(${position}px)`;
-      animationId = requestAnimationFrame(animate);
-    }
-
-    animate();
-
-    const outer = document.querySelector('.ticker-outer');
-    outer.addEventListener('mouseenter', () => cancelAnimationFrame(animationId));
-    outer.addEventListener('mouseleave', () => { animate(); });
-  }
-
-  async function loadNews() {
-    try {
-      const cached = localStorage.getItem(CACHE_KEY);
-      if (cached) {
-        const { data, timestamp } = JSON.parse(cached);
-        if (Date.now() - timestamp < CACHE_TTL) { buildTicker(data); return; }
-      }
-    } catch(e) {}
-
-    try {
-      const res = await fetch(VERCEL_API);
-      const json = await res.json();
-      const articles = json.articles || [];
-      if (articles.length) {
-        localStorage.setItem(CACHE_KEY, JSON.stringify({ data: articles, timestamp: Date.now() }));
-        buildTicker(articles);
-      }
-    } catch(e) {
-      document.getElementById('ticker').innerHTML = '<span class="loading">Unable to load news feed.</span>';
-    }
-  }
-
-  loadNews();
+  updateClock();
+  setInterval(updateClock, 1000);
 </script>
 </body>
 </html>
