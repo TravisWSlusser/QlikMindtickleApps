@@ -66,7 +66,15 @@
   @keyframes pulse-purple { 0%,100%{opacity:1;transform:scale(1)}50%{opacity:0.6;transform:scale(0.85)} }
   @keyframes flash-orange { 0%,100%{opacity:1;transform:scale(1.1)}50%{opacity:0.3;transform:scale(0.8)} }
 
-  .provider-icon { width: 14px; height: 14px; opacity: 0.9; flex-shrink: 0; }
+  .provider-icon {
+    width: 14px;
+    height: 14px;
+    object-fit: contain;
+    opacity: 0.9;
+    flex-shrink: 0;
+    display: block;
+  }
+
   .provider-name { font-family: 'Barlow Condensed', sans-serif; font-size: 13px; font-weight: 800; letter-spacing: 1px; text-transform: uppercase; color: #ffffff; white-space: nowrap; }
   .provider-status { font-size: 11px; font-weight: 300; color: rgba(255,255,255,0.65); white-space: nowrap; }
   .status-divider { width: 1px; height: 16px; background: rgba(255,255,255,0.12); }
@@ -83,7 +91,6 @@
     object-fit: cover; z-index: 0; opacity: 0.5;
   }
 
-  /* Animated gradient overlay */
   .bg-overlay {
     position: absolute; inset: 0;
     background: linear-gradient(135deg, #0d2a47 0%, #006580 50%, #0d2a47 100%);
@@ -114,7 +121,6 @@
     border-bottom: 3px solid #009845;
   }
 
-  /* Gleam lines */
   .gleam-top, .gleam-bottom {
     position: absolute; left: 0; width: 100%; height: 3px;
     background: #009845; z-index: 5; overflow: hidden;
@@ -139,7 +145,6 @@
   @keyframes gleam-right { 0%{transform:skewX(-15deg) translateX(-200%)}100%{transform:skewX(-15deg) translateX(600%)} }
   @keyframes gleam-left { 0%{transform:skewX(-15deg) translateX(200%)}100%{transform:skewX(-15deg) translateX(-600%)} }
 
-  /* Left section */
   .hub-left {
     display: flex;
     flex-direction: row;
@@ -182,8 +187,8 @@
 
   .buttons {
     display: flex;
-    gap: 8px;
-    flex-wrap: nowrap;
+    gap: 6px;
+    flex-wrap: wrap;
     width: 100%;
   }
 
@@ -198,7 +203,9 @@
     white-space: nowrap; overflow: hidden;
     transition: transform 0.2s ease, box-shadow 0.2s ease, background 0.2s ease, border-color 0.2s ease;
     cursor: pointer;
-    flex: 1;
+    flex: 1 1 calc(50% - 4px);
+    max-width: calc(50% - 4px);
+    min-width: 120px;
   }
 
   .btn::after {
@@ -234,7 +241,6 @@
   }
   .btn:hover .btn-tooltip { opacity: 1; }
 
-  /* Terminal */
   .terminal-box {
     background: rgba(5,15,30,0.85);
     border: 1px solid rgba(16,207,201,0.25);
@@ -269,7 +275,6 @@
   .cursor.active { animation: blink 1s step-end infinite; opacity: 1; }
   @keyframes blink { 0%,100%{opacity:1}50%{opacity:0} }
 
-  /* ── DIVIDER ── */
   .hub-divider {
     width: 1px;
     align-self: stretch;
@@ -279,7 +284,6 @@
     flex-shrink: 0;
   }
 
-  /* ── STORY BUTTON ── */
   .hub-story {
     display: flex;
     flex-direction: column;
@@ -288,6 +292,8 @@
     gap: 10px;
     z-index: 2;
     flex: 1;
+    min-width: 0;
+    padding: 0 8px;
   }
 
   .story-btn {
@@ -297,7 +303,9 @@
     justify-content: center;
     gap: 4px;
     padding: 14px 40px;
-    min-width: 200px;
+    min-width: 0;
+    width: 100%;
+    max-width: 220px;
     background: linear-gradient(135deg, #A37DF6, #7c4fd4, #A37DF6);
     background-size: 200% 200%;
     animation: gradientPulse 3s ease infinite;
@@ -359,6 +367,38 @@
   }
 
   .story-icon { width: 22px; height: 22px; margin-bottom: 2px; opacity: 0.9; }
+
+  /* ── RESPONSIVE ── */
+  @media (max-width: 900px) {
+    .hub { padding: 14px 16px; }
+    .hub-left { flex: 0 0 68%; max-width: 68%; gap: 12px; }
+    .hub-icon img { height: 90px; }
+    .hub-title { font-size: 16px; }
+    .btn { padding: 0 10px; font-size: 11px; }
+    .btn-label { font-size: 11px; }
+    .hub-divider { margin: 0 12px; }
+    .hub-story { padding: 0 6px; }
+    .story-btn { padding: 12px 20px; }
+    .story-btn-label { font-size: 13px; }
+  }
+
+  @media (max-width: 700px) {
+    .hub { padding: 12px 12px; gap: 0; }
+    .hub-left { flex: 0 0 64%; max-width: 64%; gap: 8px; }
+    .hub-icon { display: none; }
+    .hub-title { font-size: 14px; letter-spacing: 1px; }
+    .btn { height: 30px; padding: 0 8px; }
+    .btn-label { font-size: 10px; }
+    .hub-divider { margin: 0 8px; }
+    .story-btn { padding: 10px 14px; }
+    .story-btn-label { font-size: 12px; }
+    .story-btn-sub { display: none; }
+  }
+
+  /* ── MOBILE BLOCK ── */
+  @media (max-width: 480px) {
+    .mobile-block { display: flex !important; }
+  }
 </style>
 </head>
 <body>
@@ -369,7 +409,7 @@
   <div class="providers" id="providers"></div>
 </div>
 
-<!-- HUB WRAPPER with video scoped inside -->
+<!-- HUB WRAPPER -->
 <div class="hub-wrapper">
   <video class="bg-video" autoplay loop muted playsinline>
     <source src="https://raw.githubusercontent.com/TravisWSlusser/QlikMindtickleApps/main/images/CallAIBG_LOOP1.webm" type="video/webm">
@@ -433,16 +473,26 @@
   </div>
 </div>
 
+<!-- MOBILE FROSTED GLASS BLOCK -->
+<div class="mobile-block" style="display:none; position:fixed; inset:0;
+  z-index:9999; align-items:center; justify-content:center;
+  backdrop-filter: blur(12px) brightness(0.4);
+  -webkit-backdrop-filter: blur(12px) brightness(0.4);
+  background: rgba(13, 42, 71, 0.5);">
+</div>
+
 <script>
   // STATUS BAR
   var VERCEL_STATUS = "https://qlik-mindtickle-apps.vercel.app/api/status";
   var STATUS_CACHE = "ss_status_cache_v2";
   var STATUS_TTL = 5 * 60 * 1000;
 
+  var ICON_BASE = "https://raw.githubusercontent.com/TravisWSlusser/QlikMindtickleApps/main/images/icons/";
+
   var PROVIDER_META = {
-    "Claude": { url: "https://status.anthropic.com", icon: '<svg class="provider-icon" viewBox="0 0 24 24" fill="white"><circle cx="12" cy="12" r="10" fill="none" stroke="white" stroke-width="1.5"/><text x="12" y="16" text-anchor="middle" font-size="11" font-weight="bold" fill="white">C</text></svg>' },
-    "ChatGPT": { url: "https://status.openai.com", icon: '<svg class="provider-icon" viewBox="0 0 24 24" fill="white"><path d="M22.28 9.29a5.93 5.93 0 0 0-.51-4.87 6 6 0 0 0-6.44-2.88 5.93 5.93 0 0 0-4.47-2A6 6 0 0 0 5.14 3.2a5.93 5.93 0 0 0-4 2.88 6 6 0 0 0 .74 7 5.93 5.93 0 0 0 .51 4.87 6 6 0 0 0 6.44 2.88 5.93 5.93 0 0 0 4.47 2 6 6 0 0 0 5.72-4.16 5.93 5.93 0 0 0 4-2.88 6 6 0 0 0-.74-7.3zM13.38 21a4.44 4.44 0 0 1-2.85-1l.36-.21 4.74-2.73a.77.77 0 0 0 .39-.68v-6.67l2 1.16a.07.07 0 0 1 0 .05v5.52A4.49 4.49 0 0 1 13.38 21zm-9.7-4.12a4.44 4.44 0 0 1-.53-3l.36.21 4.74 2.73a.77.77 0 0 0 .78 0L14.49 14v2.32a.08.08 0 0 1 0 .06l-4.8 2.77a4.49 4.49 0 0 1-6.01-2.27zM3.08 8.09A4.44 4.44 0 0 1 5.44 6l-.01.42v5.46a.77.77 0 0 0 .39.68l5.36 3.09-2 1.16a.08.08 0 0 1-.06 0L4.32 14a4.49 4.49 0 0 1-1.24-5.91zm16.44 3.87-5.36-3.09 2-1.16a.07.07 0 0 1 .06 0l4.8 2.77a4.49 4.49 0 0 1-.7 8.1v-.42l.01-5.46a.77.77 0 0 0-.39-.67zm2-3-.36-.21-4.74-2.73a.77.77 0 0 0-.78 0L9.51 9V6.68a.07.07 0 0 1 0-.06l4.8-2.77a4.49 4.49 0 0 1 6.67 4.65l-.46-.54zm-12.54 4.13-2-1.16a.08.08 0 0 1 0-.05V6.36a4.49 4.49 0 0 1 7.37-3.44l-.36.21-4.74 2.73a.77.77 0 0 0-.39.68l.12 6.66zm1.09-2.35L12 9.53l2 1.14v2.28l-2 1.14-2-1.15V10.7z"/></svg>' },
-    "Gemini": { url: "https://status.cloud.google.com", icon: '<svg class="provider-icon" viewBox="0 0 24 24" fill="white"><path d="M12 2l2.5 7.5H22l-6.5 4.5 2.5 7.5L12 17l-6 4.5 2.5-7.5L3 9.5h7.5z"/></svg>' }
+    "Claude":  { url: "https://status.anthropic.com",       icon: '<img class="provider-icon" src="' + ICON_BASE + 'claudicon.png"  alt="Claude">'  },
+    "ChatGPT": { url: "https://status.openai.com",          icon: '<img class="provider-icon" src="' + ICON_BASE + 'chatgpticon.png" alt="ChatGPT">' },
+    "Gemini":  { url: "https://status.cloud.google.com",    icon: '<img class="provider-icon" src="' + ICON_BASE + 'geminiicon.png"  alt="Gemini">'  }
   };
 
   function getStatusLabel(s) {
