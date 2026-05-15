@@ -227,6 +227,10 @@
     letter-spacing: 1px;
     text-transform: uppercase;
   }
+
+  @media (max-width: 480px) {
+    .mobile-block { display: flex !important; }
+  }
 </style>
 </head>
 <body>
@@ -278,5 +282,20 @@
   updateClock();
   setInterval(updateClock, 1000);
 </script>
+
+<div class="mobile-block" style="display:none; position:fixed; inset:0;
+  background:#0d2a47; z-index:9999; align-items:center; justify-content:center;
+  flex-direction:column; gap:12px; padding:24px; text-align:center;">
+  <img src="https://raw.githubusercontent.com/TravisWSlusser/QlikMindtickleApps/main/images/icons/BadFX2.png"
+    style="width:60px; height:60px; filter: invert(1) sepia(1) saturate(2) hue-rotate(155deg) brightness(1.1);">
+  <p style="font-family:'Barlow Condensed',sans-serif; font-size:18px;
+    font-weight:800; color:#fff; letter-spacing:1px; text-transform:uppercase;">
+    Best viewed on desktop or tablet
+  </p>
+  <p style="font-family:'Inter',sans-serif; font-size:12px;
+    color:rgba(255,255,255,0.5); max-width:240px;">
+    This widget is optimized for larger screens.
+  </p>
+</div>
 </body>
 </html>
