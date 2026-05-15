@@ -284,7 +284,7 @@
     src="https://raw.githubusercontent.com/TravisWSlusser/QlikMindtickleApps/main/images/icons/BadFX2.png"
     class="mobile-icon"
     onerror="this.style.display='none'"
-    style="width:70px; height:70px; filter: invert(1) sepia(1) saturate(5) hue-rotate(140deg) brightness(1.5) contrast(1.2);">
+    style="width:70px; height:70px;">
   <p id="mobileText" class="mobile-text"></p>
   <p id="mobileSub" class="mobile-sub">This widget is optimized<br>for larger screens.</p>
 </div>
@@ -392,6 +392,12 @@
   }
 
   function initMobileBlock() {
+    var icons = [
+      'https://raw.githubusercontent.com/TravisWSlusser/QlikMindtickleApps/main/images/icons/BadFX1.png',
+      'https://raw.githubusercontent.com/TravisWSlusser/QlikMindtickleApps/main/images/icons/BadFX2.png',
+      'https://raw.githubusercontent.com/TravisWSlusser/QlikMindtickleApps/main/images/icons/BadFX3.png'
+    ];
+    mobileIcon.src = icons[Math.floor(Math.random() * icons.length)];
     setTimeout(function() { mobileIcon.classList.add('visible'); }, 300);
     setTimeout(function() {
       mobileText.classList.add('visible');
