@@ -26,6 +26,8 @@
     width: 100%;
     height: 320px;
     overflow: hidden;
+    display: flex;
+    align-items: center;
   }
 
   .bg {
@@ -64,18 +66,41 @@
 
   .content {
     position: absolute;
-    top: 0; left: 0; right: 0; bottom: 30px;
+    top: 0;
+    left: 0;
+    right: 240px;
+    bottom: 30px;
     z-index: 2;
     display: flex;
     align-items: center;
     padding: 0 48px;
   }
 
+  @media (max-width: 900px) {
+    .content {
+      right: 200px;
+    }
+    .side-qlik {
+      width: 190px !important;
+      right: 20px !important;
+    }
+  }
+
+  @media (max-width: 700px) {
+    .content {
+      right: 160px;
+    }
+    .side-qlik {
+      width: 150px !important;
+      right: 10px !important;
+    }
+  }
+
   .welcome-msg {
     position: absolute;
     opacity: 0;
     transition: opacity 0.6s ease;
-    max-width: 65%;
+    max-width: 100%;
   }
 
   .welcome-msg.active { opacity: 1; }
@@ -124,7 +149,7 @@
     position: absolute;
     opacity: 0;
     transition: opacity 0.6s ease;
-    max-width: 65%;
+    max-width: 100%;
   }
 
   .tip-msg.active { opacity: 1; }
@@ -201,6 +226,8 @@
     color: #fff;
     letter-spacing: 1px;
     text-transform: uppercase;
+    white-space: pre-line;
+    text-align: center;
   }
 
   .mobile-text.visible {
@@ -256,9 +283,10 @@
   <img id="mobileIcon"
     src="https://raw.githubusercontent.com/TravisWSlusser/QlikMindtickleApps/main/images/icons/BadFX2.png"
     class="mobile-icon"
-    style="width:70px; height:70px; filter: invert(1) sepia(1) saturate(2) hue-rotate(155deg) brightness(1.1);">
+    onerror="this.style.display='none'"
+    style="width:70px; height:70px; filter: invert(79%) sepia(51%) saturate(492%) hue-rotate(136deg) brightness(101%) contrast(101%);">
   <p id="mobileText" class="mobile-text"></p>
-  <p id="mobileSub" class="mobile-sub">This widget is optimized for larger screens.</p>
+  <p id="mobileSub" class="mobile-sub">This widget is optimized<br>for larger screens.</p>
 </div>
 
 <script>
@@ -339,7 +367,7 @@
 
   // ── MOBILE GLITCH ──
   const CHARS = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789@#$%&!?><[]{}";
-  const TARGET = "BEST VIEWED ON DESKTOP OR TABLET";
+  const TARGET = "BEST VIEWED ON\nDESKTOP OR TABLET";
   const mobileText = document.getElementById('mobileText');
   const mobileIcon = document.getElementById('mobileIcon');
   const mobileSub = document.getElementById('mobileSub');
@@ -350,7 +378,7 @@
     let i = 0; const frames = 12;
     const t = setInterval(function() {
       const p = i / frames;
-      el.textContent = original.split('').map(c => c === ' ' ? ' ' : Math.random() < (1 - p) ? rand() : c).join('');
+      el.textContent = original.split('').map(c => c === ' ' ? ' ' : c === '\n' ? '\n' : Math.random() < (1 - p) ? rand() : c).join('');
       i++;
       if (i >= frames) { clearInterval(t); el.textContent = original; if (callback) callback(); }
     }, 40);
@@ -375,10 +403,8 @@
     }, 700);
   }
 
-  if (window.innerWidth <= 480) initMobileBlock();
-  window.addEventListener('resize', function() {
-    if (window.innerWidth <= 480) initMobileBlock();
-  });
+  // Always init - CSS controls visibility via media query
+  initMobileBlock();
 </script>
 </body>
 </html>
